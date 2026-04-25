@@ -1,0 +1,35 @@
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Python (in case anyone iterates with Python helpers)
+__pycache__/
+*.pyc
+.venv/
+.env
+venv/
+
+# Skill packaging artifacts
+*.skill
+dist/
+build/
+
+# Local secrets that should never land in the repo
+*.pem
+*.key
+*.p12
+.netrc
+secrets.env
+.env.local
+
+# Test mailbox dumps / sample emails
+/tmp_mail/
+*.eml
+*.mbox
+
+# Skill-creator workspace (test runs)
+*-workspace/
