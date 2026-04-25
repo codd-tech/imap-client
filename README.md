@@ -1,6 +1,11 @@
 # imap-client
 
-A skill for [OpenClaw](https://openclaw.ai) and other AgentSkills-compatible runtimes (Claude Code, generic) that lets the agent read, search, and download email over IMAP from the command line via the [`myl`](https://github.com/pschmitt/myl) CLI client.
+[![Install via ClawHub](https://img.shields.io/badge/install-clawhub-2563eb?style=flat-square)](https://clawhub.ai/aggrrrh/imap-client)
+[![License: MIT](https://img.shields.io/github/license/codd-tech/imap-client?style=flat-square)](./LICENSE)
+[![Maintained by codd.tech](https://img.shields.io/badge/maintained%20by-codd.tech-f97316?style=flat-square)](https://codd.tech)
+[![Stars](https://img.shields.io/github/stars/codd-tech/imap-client?style=flat-square)](https://github.com/codd-tech/imap-client/stargazers)
+
+An agent skill for [OpenClaw](https://openclaw.ai), Claude Code, and other AgentSkills-compatible runtimes. Lets the agent read, search, and download email over IMAP from the command line via the [`myl`](https://github.com/pschmitt/myl) CLI client.
 
 `myl` is a small read-only IMAP client. This skill teaches the agent **when** to reach for it, **how** to install it, **how to source credentials safely** from the runtime's environment-injection mechanism, and **which** flags to use for common tasks — without ever asking for the password mid-session.
 
@@ -40,11 +45,33 @@ pipx install myl
 
 ### 2. Get an app-specific password from your provider
 
-Account settings → app passwords / external app passwords. Direct links per provider in `references/authentication.md`.
+Account settings → app passwords / external app passwords. Direct links per provider in [`references/authentication.md`](./references/authentication.md).
 
-### 3. Configure credentials — pick the method for your runtime
+### 3. Install the skill
 
-**OpenClaw:** edit `~/.openclaw/openclaw.json`:
+**Recommended — via ClawHub:**
+
+```bash
+clawhub install imap-client
+```
+
+**Or clone directly:**
+
+```bash
+# OpenClaw
+git clone https://github.com/codd-tech/imap-client ~/.openclaw/skills/imap-client
+
+# Claude Code
+git clone https://github.com/codd-tech/imap-client ~/.claude/skills/imap-client
+
+# Generic AgentSkills runtime — drop the folder anywhere the runtime scans for SKILL.md
+```
+
+Restart the session. OpenClaw picks the skill up automatically. The skill declares `requires.bins: ["myl"]` so it filters itself out if `myl` isn't on `PATH` — you'll never get a half-broken state.
+
+### 4. Configure credentials — pick the method for your runtime
+
+**OpenClaw** (recommended for OpenClaw users) — edit `~/.openclaw/openclaw.json`:
 
 ```json
 {
@@ -69,7 +96,7 @@ chmod 600 ~/.openclaw/openclaw.json
 
 OpenClaw injects these into `process.env` per agent run. You configure once; every subsequent session has them.
 
-**Claude Code / generic shell:** export in `~/.bashrc` / `~/.zshrc`:
+**Claude Code / generic shell** — export in `~/.bashrc` / `~/.zshrc`:
 
 ```bash
 export IMAP_USER='you@yandex.ru'
@@ -77,7 +104,7 @@ export IMAP_PASSWORD='app-specific-password-here'
 export IMAP_PROVIDER='yandex'
 ```
 
-**Headless / cron / fallback:** create `~/.config/imap-client/credentials`:
+**Headless / cron / fallback** — create `~/.config/imap-client/credentials`:
 
 ```bash
 mkdir -p ~/.config/imap-client
@@ -90,24 +117,6 @@ chmod 600 ~/.config/imap-client/credentials
 ```
 
 The wrapper refuses to source this file if its permissions are not `600` or `400`.
-
-### 4. Install the skill
-
-**OpenClaw:**
-
-```bash
-git clone https://github.com/<your-username>/imap-client ~/.openclaw/skills/imap-client
-```
-
-Restart the session. OpenClaw picks the skill up automatically. `requires.bins: ["myl"]` means it filters itself out if `myl` isn't on `PATH`, so you'll never get a half-broken state.
-
-**Claude Code:**
-
-```bash
-git clone https://github.com/<your-username>/imap-client ~/.claude/skills/imap-client
-```
-
-**Generic AgentSkills runtime:** drop the folder anywhere the runtime scans for `SKILL.md`.
 
 ### 5. Verify
 
@@ -147,7 +156,7 @@ The skill is opinionated about credentials. The short version:
 - The agent is instructed not to echo, summarise, or persist the password anywhere.
 - For OpenClaw users, `apiKey` with a `SecretRef` (`{ source, provider, id }`) keeps the literal password out of `openclaw.json` entirely.
 
-See `references/authentication.md` for the full ruleset.
+See [`references/authentication.md`](./references/authentication.md) for the full ruleset.
 
 ## Limitations of `myl` itself
 
@@ -162,11 +171,11 @@ See `references/authentication.md` for the full ruleset.
 
 ## Contributing
 
-Bug reports and PRs welcome. The skill itself is markdown + two shell scripts — easy to read, easy to fork.
+Bug reports and PRs welcome. The skill itself is markdown plus two shell scripts — easy to read, easy to fork.
 
 When proposing changes, prefer:
 
-- additions to `references/` over additions to `SKILL.md` (keep the always-loaded part lean — currently 121 lines)
+- additions to `references/` over additions to `SKILL.md` (keep the always-loaded part lean)
 - examples that don't paste credentials anywhere
 - behaviour changes that fail safely if the user's `myl` version is older than the skill assumes
 
@@ -176,6 +185,12 @@ When proposing changes, prefer:
 - [OpenClaw](https://openclaw.ai) for the AgentSkills runtime, env injection mechanism, and skills format documented at https://docs.openclaw.ai/tools/skills.
 - Anthropic's [Skills documentation](https://docs.claude.com/en/docs/build-with-claude/skills) — structure and best-practice patterns.
 
+## About the maintainer
+
+Built and maintained by **[codd.tech](https://codd.tech)** — a boutique technical consultancy specialising in AI agent infrastructure, distributed systems, and platform engineering. We help product teams ship reliable agentic workflows in production: integration design, custom skill packs, OpenClaw / Claude / MCP deployments, and DevOps audits.
+
+Have a use case for agent-driven email automation, or want a custom skill built for your stack? **[Get in touch](https://codd.tech)**.
+
 ## License
 
-MIT — see `LICENSE`.
+MIT — see [`LICENSE`](./LICENSE).

@@ -1,14 +1,14 @@
 ---
 name: imap-client
-description: 'Read, search, and download email over IMAP from the command line using the `myl` CLI client (https://github.com/pschmitt/myl). Use this skill whenever the user wants to interact with their mailbox from a terminal — checking the inbox, listing or searching messages, reading a specific email, opening HTML or raw source, or saving attachments. Trigger on any of these cues even when `myl` is not named explicitly — "check my email", "look in my inbox", "search my mail for X", "find the email from Y", "download the attachment", "is there an email about Z", "read the latest message", "show me unread", "connect to my IMAP server", "imap.gmail.com", "imap.yandex.com", "imap.yandex.ru", "imap.mail.ru", "imap.fastmail.com", "Yandex Mail", "Mail.ru", "Gmail IMAP", "проверить почту", "новые письма", "найти письмо", and similar. Also trigger when the user asks to script or automate any of the above. Do not trigger for outgoing mail (sending, SMTP, drafting) — `myl` is read-only — or for desktop/GUI mail clients.'
+description: 'Read, search, and download email over IMAP from the command line using the `myl` CLI client. Use this skill whenever the user wants to interact with their mailbox from a terminal — checking the inbox, listing or searching messages, reading a specific email, opening HTML or raw source, or saving attachments. Trigger on any of these cues even when `myl` is not named explicitly — "check my email", "look in my inbox", "search my mail for X", "find the email from Y", "download the attachment", "is there an email about Z", "read the latest message", "show me unread", "connect to my IMAP server", "imap.gmail.com", "imap.yandex.com", "imap.yandex.ru", "imap.mail.ru", "imap.fastmail.com", "Yandex Mail", "Mail.ru", "Gmail IMAP", "проверить почту", "новые письма", "найти письмо", and similar. Also trigger when the user asks to script or automate any of the above. Do not trigger for outgoing mail (sending, SMTP, drafting) — `myl` is read-only — or for desktop/GUI mail clients.'
 license: MIT
-homepage: https://github.com/pschmitt/myl
+homepage: https://github.com/codd-tech/imap-client
 metadata: {"openclaw":{"emoji":"📬","requires":{"bins":["myl"],"env":["IMAP_USER","IMAP_PASSWORD"]},"primaryEnv":"IMAP_PASSWORD","install":[{"id":"pipx","kind":"pipx","package":"myl","bins":["myl"],"label":"Install myl via pipx"}]}}
 ---
 
 # imap-client
 
-Read mailboxes over IMAP from the terminal using [`myl`](https://github.com/pschmitt/myl), a small Python CLI client. Designed to drop into [OpenClaw](https://openclaw.ai) and any other AgentSkills-compatible runtime (Claude Code, generic).
+Read mailboxes over IMAP from the terminal using `myl`, a small Python CLI client. Maintained and distributed by [codd-tech](https://github.com/codd-tech/imap-client). Designed to drop into [OpenClaw](https://openclaw.ai) and any other AgentSkills-compatible runtime (Claude Code, generic).
 
 `myl` is read-only and intentionally minimal: it lists, searches, and fetches messages and attachments. It does not send mail, manage folders, or modify state beyond optionally marking messages as seen.
 
