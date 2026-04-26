@@ -52,15 +52,15 @@ Every `myl` example in this skill goes through `{baseDir}/scripts/imap.sh`, whic
 
 ## Principles
 
-### 1. Credentials never appear in commands you generate
+### 1. Credentials must not appear in agent-generated commands or logs
 
-Because env vars are injected by the runtime, the wrapper handles them internally. **Do not** generate commands like `myl -p hunter2` or `myl -p "$IMAP_PASSWORD"` directly — both leak. The first lands in shell history; the second exposes the password in `/proc/<pid>/cmdline` while myl runs. Use the wrapper, which keeps the password inside its own process scope:
+**Do not** generate commands like `myl --password hunter2` or `myl --password "$IMAP_PASSWORD"` directly — the first hardcodes the secret in shell history and conversation logs; the second exposes it there too and adds no benefit over the wrapper. Always use the wrapper:
 
 ```bash
 bash {baseDir}/scripts/imap.sh --count 5
 ```
 
-The wrapper passes credentials to `myl` via stdin where supported and otherwise via flags it constructs internally — same trade-off as direct `myl` use, but the password literal never appears in any command you wrote, logged, or showed the user.
+The wrapper reads credentials from env vars and passes them to `myl` via `--username`/`--password` flags. This means the password **is** briefly visible in `/proc/<pid>/cmdline` and `ps` output to other processes on the same host while `myl` runs — the same exposure as running `myl` directly with env-var expansion. The wrapper's benefit is narrower: the password value never appears in commands the agent generates, in shell history, or in conversation logs. On shared or multi-user machines this argv exposure should be understood as a residual risk.
 
 ### 2. Default to small result sets
 
